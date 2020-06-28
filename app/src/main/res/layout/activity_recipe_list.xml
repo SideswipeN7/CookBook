@@ -11,8 +11,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:baselineAligned="false">
+        android:background="@color/colorMain"
+        android:baselineAligned="false"
+        android:gravity="center_horizontal">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -24,9 +25,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="@dimen/fab_margin"
+                android:backgroundTint="@android:color/holo_green_light"
                 app:layout_anchorGravity="bottom|end"
                 app:srcCompat="@drawable/ic_add_black" />
 
@@ -43,6 +44,8 @@
                 android:gravity="center"
                 android:text="@string/no_data_text"
                 android:textSize="30sp" />
+            <!--            TODO: add viewModel-->
+            <!--android:visibility="@={recipes!!.isNullOrEmpty() ? @Visibility.Visible : @Visibility.Gone }"-->
         </RelativeLayout>
 
 

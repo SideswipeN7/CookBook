@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?><!--<layout xmlns:android="http://schemas.android.com/apk/res/android">-->
+<layout>
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.whynot.cookbook.viewmodels.EditRecipeViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorMain"
+        android:orientation="vertical"
+        tools:context=".EditRecipeActivity">
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/btns_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginTop="20dp"
+                    android:theme="@style/CardStyle">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Recipe"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Recipe name"
+                            android:inputType="text"
+                            android:text="@={viewModel.name}" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginTop="20dp"
+                    android:theme="@style/CardStyle">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Category"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:spinnerMode="dialog"
+                            android:layout_margin="10dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginTop="20dp"
+                    android:theme="@style/CardStyle">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Image"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:maxHeight="240dp"
+                            android:paddingLeft="40dp"
+                            android:paddingTop="40dp"
+                            android:paddingRight="40dp"
+                            android:paddingBottom="70dp"
+                            android:scaleType="fitCenter"
+                            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/btn_add_image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="@dimen/fab_margin"
+                            android:backgroundTint="@android:color/holo_green_light"
+                            app:layout_anchorGravity="bottom|end"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:srcCompat="@drawable/ic_add_black" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:theme="@style/CardStyle">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Synopsis"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Synopsis"
+                            android:inputType="textMultiLine"
+                            android:lines="20"
+                            android:minLines="5"
+                            android:scrollHorizontally="false"
+                            android:text="@={viewModel.synopsis}" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:theme="@style/CardStyle">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/txv_ingredients"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Ingredients"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ListView
+                            android:id="@+id/list_ingredients"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toTopOf="@id/btn_add_ingredient"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/txv_ingredients"></ListView>
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/btn_add_ingredient"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_margin="@dimen/fab_margin"
+                            android:backgroundTint="@android:color/holo_green_light"
+                            app:layout_anchorGravity="bottom|end"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:srcCompat="@drawable/ic_add_black" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:theme="@style/CardStyle">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/txv_steps"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Steps"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ListView
+                            android:id="@+id/list_steps"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toTopOf="@id/btn_add_step"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/txv_steps"></ListView>
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/btn_add_step"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_margin="@dimen/fab_margin"
+                            android:backgroundTint="@android:color/holo_green_light"
+                            app:layout_anchorGravity="bottom|end"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:srcCompat="@drawable/ic_add_black" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+
+            </LinearLayout>
+        </ScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/btns_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="parent">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/fab_margin"
+                android:backgroundTint="@android:color/holo_green_light"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_done" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/fab_margin"
+                android:backgroundTint="@android:color/holo_red_light"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_close_black" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
