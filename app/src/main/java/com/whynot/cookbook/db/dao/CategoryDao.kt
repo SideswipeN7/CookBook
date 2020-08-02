@@ -26,8 +26,8 @@ interface CategoryDao {
     fun getAllWithRecipes(): CategoryWithRecipes
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    fun insert(vararg category: Category): Array<Long>
+    fun insert(category: Category): Long
 
     @Update(onConflict = OnConflictStrategy.ABORT)
-    fun update(vararg category: Category): Int
+    fun update(category: Category): Int
 }

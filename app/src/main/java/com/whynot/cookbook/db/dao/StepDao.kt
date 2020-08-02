@@ -1,6 +1,7 @@
 package com.whynot.cookbook.db.dao
 
 import androidx.room.*
+import com.whynot.cookbook.db.data.STEP_TABLE
 import com.whynot.cookbook.db.data.Step
 
 @Dao
@@ -9,8 +10,11 @@ interface StepDao {
     fun delete(vararg step: Step): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(vararg step: Step): Array<Long>
+    fun insert(step: Step): Long
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(vararg step: Step): Int
+    fun update(step: Step): Int
+
+    @Query("SELECT * FROM $STEP_TABLE")
+    fun getAll(): List<Step>
 }

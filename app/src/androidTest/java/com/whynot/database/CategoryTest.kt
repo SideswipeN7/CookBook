@@ -1,6 +1,7 @@
 package com.whynot.database
 
 import android.content.Context
+import android.database.sqlite.SQLiteConstraintException
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -9,6 +10,7 @@ import com.whynot.cookbook.db.dao.CategoryDao
 import com.whynot.cookbook.db.data.Category
 import com.whynot.utils.TestUtil
 import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertTrue
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -40,14 +42,15 @@ class CategoryTest {
         val category1: Category = TestUtil.createCategory("testing category")
         val category2: Category = TestUtil.createCategory("testing category")
 
-        val insertedIds = categoryDao.insert(category1, category2)
+        val insertedId1 = categoryDao.insert(category1)
+        val insertedId2 = categoryDao.insert(category2)
         var all = categoryDao.getAll()
 
         assertEquals(2, all.size)
-        assertEquals(insertedIds[0], all[0].id)
-        assertEquals(insertedIds[1], all[1].id)
+        assertEquals(insertedId1, all[0].id)
+        assertEquals(insertedId2, all[1].id)
 
-        val selected = categoryDao.get(insertedIds[0])
+        val selected = categoryDao.get(insertedId1)
         assertEquals(selected.id, all[0].id)
         assertEquals(selected.name, all[0].name)
 
@@ -67,5 +70,55 @@ class CategoryTest {
 
         all = categoryDao.getAll()
         assertEquals(newCategoryName, all[0].name)
+    }
+
+    @Test
+    fun insertDuplicate() {
+        var exceptionThrown = false
+        val category1: Category = TestUtil.createCategory("testing category")
+        val newId = categoryDao.insert(category1)
+        val category2 = category1.copy(id = newId)
+
+        try {
+            categoryDao.insert(category2)
+        } catch (ex: Exception) {
+            exceptionThrown = true
+            assertEquals(SQLiteConstraintException::class.java, ex::class.java)
+        }
+
+        assertTrue(exceptionThrown)
+
+        exceptionThrown = false
+        val category3 = category2.copy(name = "Other name")
+
+        try {
+            categoryDao.insert(category3)
+        } catch (ex: Exception) {
+            exceptionThrown = true
+            assertEquals(SQLiteConstraintException::class.java, ex::class.java)
+        }
+        assertTrue(exceptionThrown)
+    }
+
+    @Test
+    fun updateNonExisting() {
+        val category: Category = TestUtil.createCategory("testing category").copy(id = 1)
+
+        categoryDao.update(category)
+
+        val all = categoryDao.getAll()
+
+        assertEquals(0, all.size)
+    }
+
+    @Test
+    fun deleteNonExisting() {
+        val category: Category = TestUtil.createCategory("testing category").copy(id = 1)
+
+        categoryDao.delete(category)
+
+        val all = categoryDao.getAll()
+
+        assertEquals(0, all.size)
     }
 }

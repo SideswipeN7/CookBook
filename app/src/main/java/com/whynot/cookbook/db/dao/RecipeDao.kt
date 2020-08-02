@@ -16,8 +16,8 @@ interface RecipeDao {
     fun get(recipeId: Int): RecipeWithDetails
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    fun insert(vararg recipe: Recipe): Array<Long>
+    fun insert(recipe: Recipe): Long
 
     @Update(onConflict = OnConflictStrategy.ABORT)
-    fun update(vararg recipe: Recipe): Int
+    fun update(recipe: Recipe): Int
 }
