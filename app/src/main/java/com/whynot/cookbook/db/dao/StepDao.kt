@@ -10,11 +10,8 @@ interface StepDao {
     fun delete(vararg step: Step): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(step: Step): Long
-
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(step: Step): Int
+    fun upsert(step: Step): Long
 
     @Query("SELECT * FROM $STEP_TABLE")
-    fun getAll(): List<Step>
+    fun get(): List<Step>
 }

@@ -7,6 +7,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.whynot.cookbook.db.CookBookDatabase
 import com.whynot.cookbook.db.dao.CategoryDao
+import com.whynot.cookbook.db.dao.RecipeDao
 import com.whynot.cookbook.db.data.Category
 import com.whynot.utils.TestUtil
 import junit.framework.Assert.assertEquals
@@ -20,6 +21,7 @@ import java.io.IOException
 @RunWith(AndroidJUnit4::class)
 class CategoryTest {
     private lateinit var categoryDao: CategoryDao
+    private lateinit var recipeDao: RecipeDao
     private lateinit var db: CookBookDatabase
 
     @Before
@@ -29,6 +31,7 @@ class CategoryTest {
             context, CookBookDatabase::class.java
         ).build()
         categoryDao = db.categories()
+        recipeDao = db.recipes()
     }
 
     @After
@@ -38,13 +41,13 @@ class CategoryTest {
     }
 
     @Test
-    fun writeReadDeleteUpdate() {
+    fun correctFlow_on_writeReadDeleteUpdate() {
         val category1: Category = TestUtil.createCategory("testing category")
         val category2: Category = TestUtil.createCategory("testing category")
 
         val insertedId1 = categoryDao.insert(category1)
         val insertedId2 = categoryDao.insert(category2)
-        var all = categoryDao.getAll()
+        var all = categoryDao.get()
 
         assertEquals(2, all.size)
         assertEquals(insertedId1, all[0].id)
@@ -58,7 +61,7 @@ class CategoryTest {
         val deleted = categoryDao.delete(all[1])
         assertEquals(1, deleted)
 
-        all = categoryDao.getAll()
+        all = categoryDao.get()
         assertEquals(1, all.size)
         assertEquals(category1.name, all[0].name)
 
@@ -68,12 +71,27 @@ class CategoryTest {
         val updatedIds = categoryDao.update(toUpdate)
         assertEquals(1, updatedIds)
 
-        all = categoryDao.getAll()
+        all = categoryDao.get()
         assertEquals(newCategoryName, all[0].name)
+
+        val recipe1 = TestUtil.createRecipe("Test 1", null,"", 1)
+        val recipe2 = TestUtil.createRecipe("Test 2", null,"", 1)
+
+        recipeDao.insert(recipe1)
+        recipeDao.insert(recipe2)
+        val new1 = recipeDao.get(1)
+
+        val category3 = TestUtil.createCategory("Category 3")
+        categoryDao.insert(category3)
+
+        val data = categoryDao.getAllWithRecipes()
+
+
+        assertEquals(1, data.size)
     }
 
     @Test
-    fun insertDuplicate() {
+    fun throw_on_insertDuplicate() {
         var exceptionThrown = false
         val category1: Category = TestUtil.createCategory("testing category")
         val newId = categoryDao.insert(category1)
@@ -101,23 +119,23 @@ class CategoryTest {
     }
 
     @Test
-    fun updateNonExisting() {
+    fun insert_on_updateNonExisting() {
         val category: Category = TestUtil.createCategory("testing category").copy(id = 1)
 
         categoryDao.update(category)
 
-        val all = categoryDao.getAll()
+        val all = categoryDao.get()
 
         assertEquals(0, all.size)
     }
 
     @Test
-    fun deleteNonExisting() {
+    fun noAction_on_deleteNonExisting() {
         val category: Category = TestUtil.createCategory("testing category").copy(id = 1)
 
         categoryDao.delete(category)
 
-        val all = categoryDao.getAll()
+        val all = categoryDao.get()
 
         assertEquals(0, all.size)
     }

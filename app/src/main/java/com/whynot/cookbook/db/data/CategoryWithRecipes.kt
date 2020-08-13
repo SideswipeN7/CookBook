@@ -12,5 +12,5 @@ data class CategoryWithRecipes(
         entityColumn = RECIPE_ID,
         associateBy = Junction(CategoryRecipe::class)
     )
-    val recipes: List<Recipe>
+    val recipes: List<Recipe>//TODO: https://stackoverflow.com/questions/44815784/room-persistent-database-how-to-insert-list-of-items-into-db-when-it-has-no-pr
 )

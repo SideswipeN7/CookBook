@@ -12,7 +12,7 @@ interface CategoryDao {
     fun delete(vararg category: Category): Int
 
     @Query("SELECT * FROM $CATEGORY_TABLE")
-    fun getAll(): List<Category>
+    fun get(): List<Category>
 
     @Query("SELECT * FROM $CATEGORY_TABLE WHERE $CATEGORY_ID = :categoryId")
     fun get(categoryId: Long): Category
@@ -23,7 +23,7 @@ interface CategoryDao {
 
     @Transaction
     @Query("SELECT * FROM $CATEGORY_TABLE")
-    fun getAllWithRecipes(): CategoryWithRecipes
+    fun getAllWithRecipes(): List<CategoryWithRecipes>
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insert(category: Category): Long

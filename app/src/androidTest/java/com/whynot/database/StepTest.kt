@@ -36,15 +36,15 @@ class StepTest {
     }
 
     @Test
-    fun writeReadDeleteUpdate() {
+    fun correctFlow_on_writeReadDeleteUpdate() {
         var step1: Step = TestUtil.createStep("testing step 1", 1)
         var step2: Step = TestUtil.createStep("testing step 2", 2)
 
-        val insertedId1 = stepDao.insert(step1)
-        val insertedId2 = stepDao.insert(step2)
+        val insertedId1 = stepDao.upsert(step1)
+        val insertedId2 = stepDao.upsert(step2)
         step1 = step1.copy(id = insertedId1)
         step2 = step2.copy(id = insertedId2)
-        var all = stepDao.getAll()
+        var all = stepDao.get()
 
         assertEquals(step1, all[0])
         assertEquals(step2, all[1])
@@ -55,48 +55,49 @@ class StepTest {
         val newStepSynopsis = "test"
         val toUpdate = step2.copy(synopsis = newStepSynopsis)
 
-        val updatedIds = stepDao.update(toUpdate)
-        assertEquals(1, updatedIds)
+        val updatedId = stepDao.upsert(toUpdate)
+        all = stepDao.get()
+        assertEquals(step2.id, updatedId)
+        assertEquals(1, all.size)
 
-        all = stepDao.getAll()
+        all = stepDao.get()
         assertEquals(newStepSynopsis, all[0].synopsis)
     }
 
     @Test
-    fun insertDuplicate() {
+    fun replace_on_insertDuplicate() {
         val step1: Step = TestUtil.createStep("testing step")
-        val newId = stepDao.insert(step1)
+        val newId = stepDao.upsert(step1)
         val step2 = step1.copy(id = newId)
 
-        stepDao.insert(step2)
+        stepDao.upsert(step2)
 
-        assertEquals(1, stepDao.getAll().size)
+        assertEquals(1, stepDao.get().size)
 
         val step3 = step2.copy(synopsis = "Other synopsis")
 
-        stepDao.insert(step3)
-        assertEquals(1, stepDao.getAll().size)
+        stepDao.upsert(step3)
+        assertEquals(1, stepDao.get().size)
     }
 
     @Test
-    fun updateNonExisting() {
+    fun insert_on_updateNonExisting() {
         val step: Step = TestUtil.createStep("testing Step").copy(id = 1)
 
-        stepDao.update(step)
+        val updated = stepDao.upsert(step)
 
-        val all = stepDao.getAll()
+        val all = stepDao.get()
 
-        assertEquals(0, all.size)
+        assertEquals(1, all.size)
+        assertEquals(1, updated)
     }
 
     @Test
-    fun deleteNonExisting() {
+    fun noAction_on_deleteNonExisting() {
         val step: Step = TestUtil.createStep("testing step").copy(id = 1)
 
-        stepDao.delete(step)
+        val deleted = stepDao.delete(step)
 
-        val all = stepDao.getAll()
-
-        assertEquals(0, all.size)
+        assertEquals(0, deleted)
     }
 }

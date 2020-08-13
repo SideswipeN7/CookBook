@@ -17,7 +17,7 @@ import java.io.IOException
 
 @RunWith(AndroidJUnit4::class)
 class IngredientTest {
-    private lateinit var IngredientDao: IngredientDao
+    private lateinit var ingredientDao: IngredientDao
     private lateinit var db: CookBookDatabase
 
     @Before
@@ -26,7 +26,7 @@ class IngredientTest {
         db = Room.inMemoryDatabaseBuilder(
             context, CookBookDatabase::class.java
         ).build()
-        IngredientDao = db.ingredients()
+        ingredientDao = db.ingredients()
     }
 
     @After
@@ -36,67 +36,65 @@ class IngredientTest {
     }
 
     @Test
-    fun writeReadDeleteUpdate() {
+    fun correctFlow_on_writeReadDeleteUpdate() {
         var ingredient1: Ingredient = TestUtil.createIngredient("testing ingredient 1")
         var ingredient2: Ingredient = TestUtil.createIngredient("testing ingredient 2")
 
-        val insertedId1 = IngredientDao.insert(ingredient1)
-        val insertedId2 = IngredientDao.insert(ingredient2)
+        val insertedId1 = ingredientDao.upsert(ingredient1)
+        val insertedId2 = ingredientDao.upsert(ingredient2)
         ingredient1 = ingredient1.copy(id = insertedId1)
         ingredient2 = ingredient2.copy(id = insertedId2)
-        var all = IngredientDao.getAll()
+        var all = ingredientDao.get()
 
         assertEquals(ingredient1, all[0])
         assertEquals(ingredient2, all[1])
 
-        val deleted = IngredientDao.delete(ingredient1)
+        val deleted = ingredientDao.delete(ingredient1)
         assertEquals(1, deleted)
 
         val newIngredientName = "test"
         val toUpdate = ingredient2.copy(name = newIngredientName)
 
-        val updatedIds = IngredientDao.update(toUpdate)
-        assertEquals(1, updatedIds)
+        val updatedId = ingredientDao.upsert(toUpdate)
+        assertEquals(ingredient2.id, updatedId)
 
-        all = IngredientDao.getAll()
+        all = ingredientDao.get()
         assertEquals(newIngredientName, all[0].name)
     }
 
     @Test
-    fun insertDuplicate() {
+    fun replace_on_insertDuplicate() {
         val ingredient1: Ingredient = TestUtil.createIngredient("testing step")
-        val newId = IngredientDao.insert(ingredient1)
+        val newId = ingredientDao.upsert(ingredient1)
         val ingredient2 = ingredient1.copy(id = newId)
 
-        IngredientDao.insert(ingredient2)
+        ingredientDao.upsert(ingredient2)
 
-        assertEquals(1, IngredientDao.getAll().size)
+        assertEquals(1, ingredientDao.get().size)
 
         val step3 = ingredient2.copy(name = "Other name")
 
-        IngredientDao.insert(step3)
-        assertEquals(1, IngredientDao.getAll().size)
+        ingredientDao.upsert(step3)
+        assertEquals(1, ingredientDao.get().size)
     }
 
     @Test
-    fun updateNonExisting() {
+    fun insert_on_upsertNonExisting() {
         val ingredient: Ingredient = TestUtil.createIngredient("testing ingredient").copy(id = 1)
 
-        IngredientDao.update(ingredient)
+        ingredientDao.upsert(ingredient)
 
-        val all = IngredientDao.getAll()
+        val all = ingredientDao.get()
 
-        assertEquals(0, all.size)
+        assertEquals(1, all.size)
     }
 
     @Test
-    fun deleteNonExisting() {
+    fun noAction_on_deleteNonExisting() {
         val ingredient: Ingredient = TestUtil.createIngredient("testing ingredient").copy(id = 1)
 
-        IngredientDao.delete(ingredient)
+        val deleted = ingredientDao.delete(ingredient)
 
-        val all = IngredientDao.getAll()
-
-        assertEquals(0, all.size)
+        assertEquals(0, deleted)
     }
 }

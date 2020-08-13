@@ -11,11 +11,8 @@ interface IngredientDao {
     fun delete(vararg ingredient: Ingredient): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(ingredient: Ingredient): Long
-
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(ingredient: Ingredient): Int
+    fun upsert(ingredient: Ingredient): Long
 
     @Query("SELECT * FROM $INGREDIENT_TABLE")
-    fun getAll(): List<Ingredient>
+    fun get(): List<Ingredient>
 }
