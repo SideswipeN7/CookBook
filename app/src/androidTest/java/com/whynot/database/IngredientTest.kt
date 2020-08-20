@@ -36,7 +36,7 @@ class IngredientTest {
     }
 
     @Test
-    fun correctFlow_on_writeReadDeleteUpdate() {
+    fun correctFlow_on_crud() {
         var ingredient1: Ingredient = TestUtil.createIngredient("testing ingredient 1")
         var ingredient2: Ingredient = TestUtil.createIngredient("testing ingredient 2")
 

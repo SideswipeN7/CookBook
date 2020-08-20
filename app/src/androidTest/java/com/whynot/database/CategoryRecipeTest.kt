@@ -43,7 +43,7 @@ class CategoryRecipeTest {
     }
 
     @Test
-    fun correctFlow_on_writeDelete() {
+    fun correctFlow_on_crud() {
         var category1: Category = TestUtil.createCategory("testing category")
         var category2: Category = TestUtil.createCategory("testing category")
         var recipe: Recipe = TestUtil.createRecipe("Test Recipe")

@@ -36,7 +36,7 @@ class StepTest {
     }
 
     @Test
-    fun correctFlow_on_writeReadDeleteUpdate() {
+    fun correctFlow_on_crud() {
         var step1: Step = TestUtil.createStep("testing step 1", 1)
         var step2: Step = TestUtil.createStep("testing step 2", 2)
 

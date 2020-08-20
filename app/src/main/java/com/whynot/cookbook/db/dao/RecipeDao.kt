@@ -13,9 +13,9 @@ interface RecipeDao {
 
     @Transaction
     @Query("SELECT * FROM $RECIPE_TABLE WHERE $RECIPE_ID = :recipeId")
-    fun get(recipeId: Int): RecipeWithDetails
+    fun get(recipeId: Long): RecipeWithDetails
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(recipe: Recipe): Long
 
     @Update(onConflict = OnConflictStrategy.ABORT)

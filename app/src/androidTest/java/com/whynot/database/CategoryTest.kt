@@ -7,6 +7,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.whynot.cookbook.db.CookBookDatabase
 import com.whynot.cookbook.db.dao.CategoryDao
+import com.whynot.cookbook.db.dao.CategoryRecipeDao
 import com.whynot.cookbook.db.dao.RecipeDao
 import com.whynot.cookbook.db.data.Category
 import com.whynot.utils.TestUtil
@@ -22,6 +23,7 @@ import java.io.IOException
 class CategoryTest {
     private lateinit var categoryDao: CategoryDao
     private lateinit var recipeDao: RecipeDao
+    private lateinit var categoryRecipeDao: CategoryRecipeDao
     private lateinit var db: CookBookDatabase
 
     @Before
@@ -32,6 +34,7 @@ class CategoryTest {
         ).build()
         categoryDao = db.categories()
         recipeDao = db.recipes()
+        categoryRecipeDao = db.categoriesRecipes()
     }
 
     @After
@@ -41,7 +44,7 @@ class CategoryTest {
     }
 
     @Test
-    fun correctFlow_on_writeReadDeleteUpdate() {
+    fun correctFlow_on_crud() {
         val category1: Category = TestUtil.createCategory("testing category")
         val category2: Category = TestUtil.createCategory("testing category")
 
@@ -74,20 +77,30 @@ class CategoryTest {
         all = categoryDao.get()
         assertEquals(newCategoryName, all[0].name)
 
-        val recipe1 = TestUtil.createRecipe("Test 1", null,"", 1)
-        val recipe2 = TestUtil.createRecipe("Test 2", null,"", 1)
+        var recipe1 = TestUtil.createRecipe("Test 1", null, "", all[0].id)
+        var recipe2 = TestUtil.createRecipe("Test 2", null, "", all[0].id)
 
-        recipeDao.insert(recipe1)
-        recipeDao.insert(recipe2)
-        val new1 = recipeDao.get(1)
+        val recipe1Id = recipeDao.insert(recipe1)
+        val recipe2Id = recipeDao.insert(recipe2)
+
+        recipe1 = recipe1.copy(id = recipe1Id)
+        recipe2 = recipe2.copy(id = recipe2Id)
+
+        val join1 = TestUtil.joinCategoryRecipe(all[0], recipe1)
+        val join2 = TestUtil.joinCategoryRecipe(all[0], recipe2)
+
+        categoryRecipeDao.insert(join1)
+        categoryRecipeDao.insert(join2)
 
         val category3 = TestUtil.createCategory("Category 3")
         categoryDao.insert(category3)
 
         val data = categoryDao.getAllWithRecipes()
 
-
-        assertEquals(1, data.size)
+        assertEquals(2, data.size)
+        assertEquals(recipe1, data[0].recipes[0])
+        assertEquals(recipe2, data[0].recipes[1])
+        assertEquals(0, data[1].recipes.size)
     }
 
     @Test

@@ -1,7 +1,7 @@
 package com.whynot.cookbook.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.whynot.cookbook.R
 
 class MainActivity : AppCompatActivity() {

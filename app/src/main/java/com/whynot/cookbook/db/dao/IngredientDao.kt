@@ -3,7 +3,6 @@ package com.whynot.cookbook.db.dao
 import androidx.room.*
 import com.whynot.cookbook.db.data.INGREDIENT_TABLE
 import com.whynot.cookbook.db.data.Ingredient
-import com.whynot.cookbook.db.data.Step
 
 @Dao
 interface IngredientDao {
